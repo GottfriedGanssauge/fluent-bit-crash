@@ -1,0 +1,18 @@
+service:
+  flush: 5
+  log_level: info
+  daemon: false
+
+pipeline:
+  inputs:
+    - name: dummy
+      samples: 25
+      tag: var.log.containers.app-default-96cbdef2340.log
+  outputs:
+    - name: azure_blob
+      match: "*"
+      account_name: "somestorageaccount"
+      shared_key: "add-storage-account-key"
+      container_name: access-logs
+      blob_type: blockblob
+      tls: true
