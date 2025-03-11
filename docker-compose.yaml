@@ -1,0 +1,41 @@
+services:
+  fluent-bit:
+    image: cr.fluentbit.io/fluent/fluent-bit:3.2.8
+    volumes:
+      # comment this line and uncomment the next for a real azure storage acount
+      # - ./fluent-bit.yaml:/tmp/fluent-bit.yaml:ro
+      - ./fluent-bit-sa.yaml:/tmp/fluent-bit.yaml:ro
+    command:
+      - /fluent-bit/bin/fluent-bit
+      - "-c"
+      - /tmp/fluent-bit.yaml
+    networks:
+      - mynet
+
+  azurestorage:
+    image: "mcr.microsoft.com/azure-storage/azurite:3.33.0"
+    # comment the next line for running the emulator
+    profiles: ["donotstart"]
+    command:
+      - azurite
+      - "--cert"
+      - /azurestorage.local.pem
+      - "--key"
+      - /azurestorage.local-key.pem
+      - "--blobHost"
+      - "0.0.0.0"
+    volumes:
+      # - ./data:/data mcr.microsoft.com/azure-storage/azurite
+      - data:/data
+      - ./azurestorage.local.pem:/azurestorage.local.pem:ro
+      - ./azurestorage.local-key.pem:/azurestorage.local-key.pem:ro
+    networks:
+      mynet:
+        aliases:
+          - azurestorage.local
+
+volumes:
+  data:
+
+networks:
+  mynet:

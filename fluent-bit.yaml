@@ -1,0 +1,22 @@
+service:
+  flush: 1
+  log_level: info
+  daemon: false
+
+pipeline:
+  inputs:
+    - name: dummy
+      samples: 15
+      tag: var.log.containers.app-default-96cbdef2340.log
+  outputs:
+    - name: azure_blob
+      match: "*"
+      # we're using the well known keys from the azurite documentation
+      account_name: "devstoreaccount1"
+      shared_key: "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
+      container_name: access-logs
+      blob_type: blockblob
+      tls: true
+      tls.verify: false
+      emulator_mode: true
+      endpoint: https://azurestorage.local:10000
