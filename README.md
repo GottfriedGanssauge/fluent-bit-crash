@@ -35,6 +35,6 @@ services:
     volumes:
       # comment this line and uncomment the next for a real azure storage acount
       # - ./fluent-bit.yaml:/tmp/fluent-bit.yaml:ro
-      - ./fluent-bit-sa.sample:/tmp/fluent-bit.yaml:ro
+      - ./fluent-bit-sa.yaml:/tmp/fluent-bit.yaml:ro
   # rest omitted ...
 ~~~
